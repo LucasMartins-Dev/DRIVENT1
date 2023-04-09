@@ -6,9 +6,9 @@ import { createOrUpdateEnrollmentSchema } from '@/schemas';
 const enrollmentsRouter = Router();
 
 enrollmentsRouter
-  .get('/cep', getAddressFromCEP)
+  .get('/enrollments/cep', getAddressFromCEP)
   .all('/*', authenticateToken)
   .get('/', getEnrollmentByUser)
-  .post('/', validateBody(createOrUpdateEnrollmentSchema), postCreateOrUpdateEnrollment);
+  .post('/enrollments', validateBody(createOrUpdateEnrollmentSchema), postCreateOrUpdateEnrollment);
 
 export { enrollmentsRouter };
