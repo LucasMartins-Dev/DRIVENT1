@@ -11,7 +11,7 @@ type AddressProps = {
     siafi: string;
   };
   
-  export const stripAddressObject = async (address: AddressProps) => {
+  export const addressObject = async (address: AddressProps) => {
     return {
       logradouro: address.logradouro || '',
       complemento: address.complemento || '',

@@ -8,8 +8,13 @@ export function handleApplicationErrors(
   res: Response,
   next: NextFunction,
 ) {
-  if (err.name === 'CannotEnrollBeforeStartDateError' || err.name === 'CepInvalidError') {
+  if (err.name === 'CannotEnrollBeforeStartDateError' || err.name === 'missingDataError') {
     return res.status(httpStatus.BAD_REQUEST).send({
+      message: err.message,
+    });
+  }
+  if (err.name == 'cepInvalidError') {
+    return res.status(httpStatus.NO_CONTENT).send({
       message: err.message,
     });
   }
