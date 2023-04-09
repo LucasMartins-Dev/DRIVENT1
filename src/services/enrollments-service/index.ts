@@ -1,7 +1,7 @@
 import { Address, Enrollment } from '@prisma/client';
 import { request } from '@/utils/request';
 
-import { invalidDataError, notFoundError,  cepInvalidError , missingDataError } from '@/errors';
+import { invalidDataError, notFoundError,  cepInvalidError} from '@/errors';
 import addressRepository, { CreateAddressParams } from '@/repositories/address-repository';
 import enrollmentRepository, { CreateEnrollmentParams } from '@/repositories/enrollment-repository';
 import { exclude } from '@/utils/prisma-utils';
@@ -12,7 +12,7 @@ async function getAddressFromCEP(cep: string) {
   const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json/`);
 
   if (!result.data) {
-    throw cepInvalidError();
+    throw notFoundError();
   }
 
   if (result.data.erro) {

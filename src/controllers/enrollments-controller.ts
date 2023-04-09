@@ -30,6 +30,8 @@ export async function postCreateOrUpdateEnrollment(req: AuthenticatedRequest, re
 
 export async function getAddressFromCEP(req: AuthenticatedRequest, res: Response , next: NextFunction) {
   const {cep} = req.query as {cep: string}
+  const regex = /^[0-9]{8}$/g;
+  if (!regex.test(cep)) return res.sendStatus(httpStatus.NO_CONTENT);
   try {
     const address = await enrollmentsService.getAddressFromCEP(cep);
     return res.status(httpStatus.OK).send(address);

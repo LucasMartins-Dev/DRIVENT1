@@ -14,7 +14,7 @@ export function handleApplicationErrors(
     });
   }
   if (err.name == 'cepInvalidError') {
-    return res.status(httpStatus.NO_CONTENT).send({
+    return res.status(httpStatus.BAD_REQUEST).send({
       message: err.message,
     });
   }
