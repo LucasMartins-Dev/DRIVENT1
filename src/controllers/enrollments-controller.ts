@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Response, NextFunction } from 'express';
+=======
+import { Response } from 'express';
+>>>>>>> 72ab463d0e240c1b816829a0566b4e4b2b461875
 import httpStatus from 'http-status';
 import { AuthenticatedRequest } from '@/middlewares';
 import enrollmentsService from '@/services/enrollments-service';
@@ -28,14 +32,15 @@ export async function postCreateOrUpdateEnrollment(req: AuthenticatedRequest, re
   }
 }
 
-export async function getAddressFromCEP(req: AuthenticatedRequest, res: Response , next: NextFunction) {
-  const {cep} = req.query as {cep: string}
-  const regex = /^[0-9]{8}$/g;
-  if (!regex.test(cep)) return res.sendStatus(httpStatus.NO_CONTENT);
+export async function getAddressFromCEP(req: AuthenticatedRequest, res: Response) {
+  const { cep } = req.query as Record<string, string>;
+
   try {
     const address = await enrollmentsService.getAddressFromCEP(cep);
-    return res.status(httpStatus.OK).send(address);
+    res.status(httpStatus.OK).send(address);
   } catch (error) {
-    next(error);
+    if (error.name === 'NotFoundError') {
+      return res.send(httpStatus.NO_CONTENT);
+    }
   }
 }
