@@ -1,7 +1,19 @@
 import {prisma} from '../../config/database'
 
-async function getTickets(){
-    return prisma.ticket.findMany()
+async function getTickets(userId: number){
+    return prisma.ticket.findFirst({
+        where: {
+          id: userId,
+        },
+        include: {
+          TicketType: true,
+          Enrollment: {
+            select: {
+              userId: true,
+            },
+          },
+        },
+      });
 }
 
 const ticketRepository = {
