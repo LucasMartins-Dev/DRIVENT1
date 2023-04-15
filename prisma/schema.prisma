@@ -51,10 +51,7 @@ model Enrollment {
   Address   Address[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-<<<<<<< HEAD
-=======
   Ticket    Ticket[]
->>>>>>> 72ab463d0e240c1b816829a0566b4e4b2b461875
 }
 
 model Address {
@@ -71,8 +68,6 @@ model Address {
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
 }
-<<<<<<< HEAD
-=======
 
 model TicketType {
   id            Int      @id @default(autoincrement())
@@ -112,4 +107,3 @@ model Payment {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
->>>>>>> 72ab463d0e240c1b816829a0566b4e4b2b461875
