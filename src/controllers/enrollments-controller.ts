@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Response, NextFunction } from 'express';
-=======
 import { Response } from 'express';
->>>>>>> 72ab463d0e240c1b816829a0566b4e4b2b461875
 import httpStatus from 'http-status';
 import { AuthenticatedRequest } from '@/middlewares';
 import enrollmentsService from '@/services/enrollments-service';

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getTickets } from '@/controllers';
+import { getTickets, getTypeTickets, createTicket } from '@/controllers';
 import { authenticateToken, validateBody } from '@/middlewares';
 import { createTicketSchema } from '@/schemas';
 
@@ -9,8 +9,8 @@ ticketsRouter.all('/*', authenticateToken);
 
 ticketsRouter.get('/', getTickets);
 
-//ticketsRouter.get('/types', );
+ticketsRouter.get('/types', getTypeTickets);
 
-//ticketsRouter.post('/', validateBody(), createTicket);
+ticketsRouter.post('/', validateBody(createTicketSchema), createTicket);
 
 export { ticketsRouter };
