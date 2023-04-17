@@ -5,5 +5,5 @@ export * from './invalid-email-error';
 export * from './not-found-error';
 export * from './unauthorized-error';
 export * from './request-error';
-export * from './cep-invalid-error'
-export * from './missing-data-error'
+export * from './cep-invalid-error';
+export * from './missing-data-error';
