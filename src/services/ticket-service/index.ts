@@ -3,8 +3,11 @@ import enrollmentRepository from '@/repositories/enrollment-repository';
 import { notFoundError, invalidDataError } from '@/errors';
 
 async function getTickets(userId: number) {
-  const tickets = await ticketsRepository.getTickets(userId);
-  return tickets;
+  const { id: enrollmentId } = await enrollmentRepository.findWithAddressByUserId(userId);
+  if (!enrollmentId) throw notFoundError();
+  const ticket = await ticketsRepository.getTickets(userId);
+  if (!ticket) throw notFoundError();
+  return { ticket };
 }
 
 async function getTicketsType() {
