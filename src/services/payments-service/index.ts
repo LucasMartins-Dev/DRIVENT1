@@ -5,7 +5,7 @@ import paymentsRepository from '@/repositories/payments-repository';
 import { Payments } from '@/protocols';
 
 async function getPayments(ticketId: number, userId: number) {
-  if (!ticketId) throw invalidDataError(['Ticket ID must be provided']);
+  if (!ticketId) throw invalidDataError(['Ticket ID not provided']);
   const ticket = await ticketsRepository.getTicketsById(ticketId);
   if (!ticket) throw notFoundError();
   if (ticket.Enrollment.userId !== userId) throw unauthorizedError();
@@ -14,7 +14,7 @@ async function getPayments(ticketId: number, userId: number) {
 }
 
 async function postPayments({ ticketId, cardData, userId }: Payments) {
-  if (!ticketId || !cardData) throw invalidDataError(['ticket Id and card Data must be provided']);
+  if (!ticketId || !cardData) throw invalidDataError(['Ticket identification or card details not provided']);
 
   const ticket = await ticketsRepository.getTicketsById(ticketId);
 

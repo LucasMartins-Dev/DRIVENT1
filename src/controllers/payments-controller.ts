@@ -6,10 +6,10 @@ import { Payments } from '@/protocols';
 
 export async function getPayments(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   const { userId } = req as { userId: number };
-  const { ticketId } = req.query;
-  const NumTicketId = Number(ticketId);
+  const ticketId = Number(req.query.ticketId);
+
   try {
-    const payment = await paymentService.getPayments(NumTicketId, userId);
+    const payment = await paymentService.getPayments(ticketId, userId);
     return res.status(httpStatus.OK).send(payment);
   } catch (error) {
     if (error.name === 'NotFoundError') return res.status(httpStatus.NOT_FOUND).send(error.message);
