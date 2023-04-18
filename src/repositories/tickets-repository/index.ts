@@ -1,17 +1,31 @@
+import { TicketStatus } from '@prisma/client';
 import { prisma } from '../../config/database';
 
 async function getTickets(userId: number) {
   return prisma.ticket.findFirst({
     where: {
-      id: userId,
-    },
-    include: {
-      TicketType: true,
       Enrollment: {
+        userId: userId,
+      },
+    },
+    select: {
+      id: true,
+      status: true,
+      ticketTypeId: true,
+      enrollmentId: true,
+      TicketType: {
         select: {
-          userId: true,
+          id: true,
+          name: true,
+          price: true,
+          isRemote: true,
+          includesHotel: true,
+          createdAt: true,
+          updatedAt: true,
         },
       },
+      createdAt: true,
+      updatedAt: true,
     },
   });
 }
@@ -39,12 +53,36 @@ async function getTicketsType() {
 type CreateTicketType = { ticketTypeId: number; enrollmentId: number };
 
 async function postTicket(ticket: CreateTicketType) {
-  return await prisma.ticket.create({
+  const ticketTypeId = ticket.ticketTypeId;
+  const enrollmentId = ticket.enrollmentId;
+  const newticket = await prisma.ticket.create({
     data: {
-      ...ticket,
-      status: 'RESERVED',
+      ticketTypeId,
+      enrollmentId,
+      status: TicketStatus.RESERVED,
+    },
+    include: {
+      TicketType: true,
     },
   });
+
+  return {
+    id: newticket.id,
+    status: newticket.status,
+    ticketTypeId: newticket.ticketTypeId,
+    enrollmentId: newticket.enrollmentId,
+    TicketType: {
+      id: newticket.TicketType.id,
+      name: newticket.TicketType.name,
+      price: newticket.TicketType.price,
+      isRemote: newticket.TicketType.isRemote,
+      includesHotel: newticket.TicketType.includesHotel,
+      createdAt: newticket.TicketType.createdAt,
+      updatedAt: newticket.TicketType.updatedAt,
+    },
+    createdAt: newticket.createdAt,
+    updatedAt: newticket.updatedAt,
+  };
 }
 
 const ticketRepository = {
