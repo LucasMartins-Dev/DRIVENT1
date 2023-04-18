@@ -27,3 +27,15 @@ export type RequestError = {
   name: string;
   message: string;
 };
+
+export type Payments = {
+  ticketId: number;
+  userId?: number;
+  cardData: {
+    issuer: string;
+    number: string;
+    name: string;
+    expirationDate: Date;
+    cvv: number;
+  };
+};
