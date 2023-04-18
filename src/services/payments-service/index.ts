@@ -10,7 +10,7 @@ async function getPayments(ticketId: number, userId: number) {
   if (!ticket) throw notFoundError();
   if (ticket.Enrollment.userId !== userId) throw unauthorizedError();
   const payment = await paymentsRepository.getPayments(ticketId);
-  return { payment };
+  return payment;
 }
 
 async function postPayments({ ticketId, cardData, userId }: Payments) {
