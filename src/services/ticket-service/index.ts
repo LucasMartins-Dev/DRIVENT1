@@ -7,7 +7,7 @@ async function getTickets(userId: number) {
   if (!enrollmentId) throw notFoundError();
   const ticket = await ticketsRepository.getTickets(userId);
   if (!ticket) throw notFoundError();
-  return { ticket };
+  return ticket;
 }
 
 async function getTicketsType() {
@@ -24,7 +24,7 @@ async function postTicket(ticketTypeId: number, userId: number) {
 
   const newTicket = await ticketsRepository.postTicket({ ticketTypeId, enrollmentId });
 
-  return { newTicket };
+  return newTicket;
 }
 
 const ticketsService = {
