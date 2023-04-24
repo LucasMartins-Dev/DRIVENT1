@@ -29,7 +29,7 @@ async function postPayments({ ticketId, cardData, userId }: Payments) {
     cardLastDigits: cardData.number.slice(-4),
   };
 
-  const newPayment = await paymentsRepository.createPayment(payment);
+  const newPayment = await paymentsRepository.createPayment(ticketId, payment);
 
   return { newPayment };
 }
