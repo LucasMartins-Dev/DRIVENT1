@@ -1,18 +1,17 @@
-import { TicketType } from '@prisma/client';
+import { TicketType, TicketStatus } from '@prisma/client';
 import { prisma } from '../../config/database';
 
-async function getTickets(userId: number) {
-  const ticket = await prisma.ticket.findFirst({
-    where: {
-      Enrollment: {
-        userId,
-      },
-    },
+async function findTicketTypes(): Promise<TicketType[]> {
+  return prisma.ticketType.findMany();
+}
+
+async function getTickets(enrollmentId: number) {
+  return prisma.ticket.findFirst({
+    where: { enrollmentId },
     include: {
-      TicketType: true,
+      TicketType: true, //join
     },
   });
-  return ticket;
 }
 
 async function getTicketByEnrollmentId(enrollmentId: number) {
@@ -30,16 +29,7 @@ async function getTicketsById(ticketId: number) {
       id: ticketId,
     },
     include: {
-      Enrollment: {
-        select: {
-          userId: true,
-        },
-      },
-      TicketType: {
-        select: {
-          price: true,
-        },
-      },
+      Enrollment: true,
     },
   });
 }
@@ -51,6 +41,28 @@ async function getTicketsType() {
 async function getTicketTypeById(ticketTypeId: number): Promise<TicketType> {
   return prisma.ticketType.findUnique({
     where: { id: ticketTypeId },
+  });
+}
+
+async function findTickeyById(ticketId: number) {
+  return prisma.ticket.findFirst({
+    where: {
+      id: ticketId,
+    },
+    include: {
+      Enrollment: true,
+    },
+  });
+}
+
+async function findTickeWithTypeById(ticketId: number) {
+  return prisma.ticket.findFirst({
+    where: {
+      id: ticketId,
+    },
+    include: {
+      TicketType: true,
+    },
   });
 }
 
@@ -71,6 +83,17 @@ async function postTicket(ticket: CreateTicketType) {
   });
 }
 
+async function ticketProcessPayment(ticketId: number) {
+  return prisma.ticket.update({
+    where: {
+      id: ticketId,
+    },
+    data: {
+      status: TicketStatus.PAID,
+    },
+  });
+}
+
 const ticketRepository = {
   getTickets,
   getTicketByEnrollmentId,
@@ -78,6 +101,9 @@ const ticketRepository = {
   getTicketsType,
   getTicketTypeById,
   postTicket,
+  findTickeyById,
+  findTickeWithTypeById,
+  ticketProcessPayment,
 };
 
 export default ticketRepository;
